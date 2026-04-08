@@ -32,8 +32,7 @@ const LoadCard = ({ load, onAccept, isAccepting }) => {
 
             <View style={styles.footer}>
                 <View style={styles.priceContainer}>
-                    <IndianRupee size={20} color="#1a1a1a" />
-                    <Text style={styles.priceText}>{load.price.toLocaleString()}</Text>
+                    <   Text style={styles.priceText}>Rs {load.price.toLocaleString()}</Text>
                 </View>
                 <TouchableOpacity
                     style={[styles.acceptButton, isAccepting && styles.disabledButton]}

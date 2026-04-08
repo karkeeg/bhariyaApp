@@ -1,5 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { Alert } from 'react-native';
+import { toast } from '@backpackapp-io/react-native-toast';
 import { fetchPendingLoads, acceptLoadRequest } from '../services/loadService';
 
 const DRIVER_ID = 'driver123';
@@ -19,10 +20,10 @@ export const useLoads = () => {
             if (response.success) {
                 setLoads(response.data);
             } else {
-                Alert.alert('Error', response.message || 'Failed to fetch loads');
+                toast.error(response.message || 'Failed to fetch loads');
             }
         } catch (error) {
-            Alert.alert('Network Error', 'Could not connect to the server. Please check your connection.');
+            toast.error('Network Error: Could not connect to the server.');
         } finally {
             setLoading(false);
             setRefreshing(false);
@@ -40,11 +41,12 @@ export const useLoads = () => {
             const response = await acceptLoadRequest(loadId, DRIVER_ID);
             if (response.success) {
                 setLoads((prevLoads) => prevLoads.filter((load) => load._id !== loadId));
+                toast.success('Load accepted successfully!');
             } else {
-                Alert.alert('Error', response.message || 'Failed to accept load');
+                toast.error(response.message || 'Failed to accept load');
             }
         } catch (error) {
-            Alert.alert('Error', 'An unexpected error occurred while accepting the load.');
+            toast.error('An unexpected error occurred while accepting the load.');
         } finally {
             setAcceptingId(null);
         }
