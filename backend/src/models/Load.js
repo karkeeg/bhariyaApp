@@ -6,6 +6,17 @@ const loadSchema = new mongoose.Schema({
     required: [true, 'Origin is required'],
     trim: true
   },
+  originCoordinates: {
+    type: {
+      type: String,
+      enum: ['Point'],
+      required: true
+    },
+    coordinates: {
+      type: [Number],  // [longitude, latitude]
+      required: true
+    }
+  },
   destination: {
     type: String,
     required: [true, 'Destination is required'],
@@ -38,5 +49,7 @@ const loadSchema = new mongoose.Schema({
   toJSON: { virtuals: true },
   toObject: { virtuals: true }
 });
+
+loadSchema.index({ originCoordinates: '2dsphere' });
 
 module.exports = mongoose.model('Load', loadSchema);

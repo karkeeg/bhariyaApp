@@ -1,11 +1,10 @@
 import { useState, useEffect, useCallback } from 'react';
-import { Alert } from 'react-native';
 import { toast } from '@backpackapp-io/react-native-toast';
 import { fetchPendingLoads, acceptLoadRequest } from '../services/loadService';
 
 const DRIVER_ID = 'driver123';
 
-export const useLoads = () => {
+export const useLoads = (location) => {
     const [loads, setLoads] = useState([]);
     const [loading, setLoading] = useState(false);
     const [acceptingId, setAcceptingId] = useState(null);
@@ -16,7 +15,10 @@ export const useLoads = () => {
         else setLoading(true);
 
         try {
-            const response = await fetchPendingLoads();
+            const lat = location?.lat;
+            const lng = location?.lng;
+
+            const response = await fetchPendingLoads(lat, lng);
             if (response.success) {
                 setLoads(response.data);
             } else {
@@ -28,11 +30,14 @@ export const useLoads = () => {
             setLoading(false);
             setRefreshing(false);
         }
-    }, []);
+    }, [location]);
 
+    // Fetch loads when location becomes available or changes
     useEffect(() => {
-        getLoads();
-    }, [getLoads]);
+        if (location) {
+            getLoads();
+        }
+    }, [location, getLoads]);
 
     const acceptLoad = async (loadId) => {
         setAcceptingId(loadId);

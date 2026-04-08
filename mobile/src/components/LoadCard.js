@@ -1,39 +1,60 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity, ActivityIndicator } from 'react-native';
-import { MapPin, Truck, IndianRupee, Weight } from 'lucide-react-native';
+import { MapPin, Truck, Weight, Navigation } from 'lucide-react-native';
 
 const LoadCard = ({ load, onAccept, isAccepting }) => {
     return (
         <View style={styles.card}>
+            {/* Distance badge */}
+            {load.distance != null && (
+                <View style={styles.distanceBadge}>
+                    <Navigation size={12} color="#111922ff" />
+                    <Text style={styles.distanceText}>
+                        {load.distance} km away
+                    </Text>
+                </View>
+            )}
+
             <View style={styles.header}>
                 <View style={styles.locationContainer}>
                     <MapPin size={18} color="#666" />
                     <Text style={styles.locationLabel}>Origin</Text>
-                    <Text style={styles.locationText}>{load.origin}</Text>
+                    <Text style={styles.locationText}>
+                        {load.origin}
+                    </Text>
                 </View>
                 <View style={styles.separator} />
                 <View style={styles.locationContainer}>
                     <MapPin size={18} color="#007AFF" />
                     <Text style={styles.locationLabel}>Destination</Text>
-                    <Text style={styles.locationText}>{load.destination}</Text>
+                    <Text style={styles.locationText}>
+                        {load.destination}
+                    </Text>
                 </View>
             </View>
 
             <View style={styles.detailsContainer}>
                 <View style={styles.detailItem}>
                     <Truck size={16} color="#444" />
-                    <Text style={styles.detailText}>{load.vehicleTypeRequired}</Text>
+                    <Text style={styles.detailText}>
+                        {load.vehicleTypeRequired}
+                    </Text>
                 </View>
                 <View style={styles.detailItem}>
                     <Weight size={16} color="#444" />
-                    <Text style={styles.detailText}>{load.weight} kg</Text>
+                    <Text style={styles.detailText}>
+                        {load.weight} kg
+                    </Text>
                 </View>
             </View>
 
             <View style={styles.footer}>
                 <View style={styles.priceContainer}>
-                    <   Text style={styles.priceText}>Rs {load.price.toLocaleString()}</Text>
+                    <Text style={styles.priceText}>
+                        Rs {load.price.toLocaleString()}
+                    </Text>
                 </View>
+
                 <TouchableOpacity
                     style={[styles.acceptButton, isAccepting && styles.disabledButton]}
                     onPress={() => onAccept(load._id)}
@@ -60,12 +81,25 @@ const styles = StyleSheet.create({
         padding: 20,
         marginBottom: 16,
         shadowColor: '#000',
-        shadowOffset: { width: 0, height: 4 },
-        shadowOpacity: 0.1,
-        shadowRadius: 10,
-        elevation: 5,
+        elevation: 2,
         borderWidth: 1,
         borderColor: '#f0f0f0',
+    },
+    distanceBadge: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        alignSelf: 'flex-start',
+        backgroundColor: '#dddfe0ff',
+        paddingHorizontal: 10,
+        paddingVertical: 4,
+        borderRadius: 12,
+        marginBottom: 12,
+        gap: 4,
+    },
+    distanceText: {
+        fontSize: 12,
+        fontWeight: '700',
+        color: '#111922ff',
     },
     header: {
         flexDirection: 'row',

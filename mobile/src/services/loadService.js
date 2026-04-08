@@ -1,8 +1,14 @@
 import api from './api';
 
-export const fetchPendingLoads = async () => {
+export const fetchPendingLoads = async (lat, lng) => {
     try {
-        const response = await api.get('/loads');
+        const params = {};
+        if (lat != null && lng != null) {
+            params.lat = lat;
+            params.lng = lng;
+        }
+
+        const response = await api.get('/loads', { params });
         return response.data;
     } catch (error) {
         console.error('Error fetching loads:', error);
